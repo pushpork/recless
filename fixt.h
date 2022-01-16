@@ -33,8 +33,8 @@ extern "C" {
 
 #include <stdint.h>
 
-typedef FixtTime uint64_t;
-typedef FixtDelta uint16_t;
+typedef uint64_t FixtTime;
+typedef uint32_t FixtDelta;
 
 typedef struct {
 	FixtDelta delta;
@@ -56,9 +56,13 @@ FIXT_DEF float fixt_get_alpha(Fixt *fixt);
 
 #define fixtloop(f, t) for (fixt_tick(f, t); (f)->acc >= (f)->delta; fixt_step(f))
 
+#ifdef __cplusplus
+}
 #endif
 
-#ifndef FIXT__IMPL
+#endif
+
+#ifdef FIXT__IMPL
 
 FIXT_DEF int fixt_init(Fixt *fixt, FixtDelta delta, FixtTime now)
 {
@@ -102,11 +106,7 @@ FIXT_DEF FixtTime fixt_get_acc(Fixt *fixt)
 
 FIXT_DEF float fixt_get_alpha(Fixt *fixt)
 {
-	return fixt->acc / fixt->delta;
+	return (float) fixt->acc / fixt->delta;
 }
 
-#endif
-
-#ifdef __cplusplus
-}
 #endif
